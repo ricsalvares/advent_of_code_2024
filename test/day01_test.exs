@@ -32,10 +32,11 @@ defmodule Day01Test do
   test "get_similarity_score example" do
     [list1, list2] = [[1, 2, 3, 3, 3, 4], [3, 3, 3, 4, 5, 9]]
 
-    assert Day01.get_similarity_score(list1, list2) |> Enum.sort == Enum.sort([ 0, 0,4,9, 9, 9])
+    assert Day01.get_similarity_score(list1, list2) |> Enum.sort() ==
+             Enum.sort([0, 0, 4, 9, 9, 9])
   end
 
   test "task2 example" do
-    assert Day01.task2() == 21142653
+    assert Day01.task2() == 21_142_653
   end
 end

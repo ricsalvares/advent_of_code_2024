@@ -7,63 +7,110 @@ defmodule Day02 do
     File.read(filename)
   end
 
-  # def task1() do
-  #   {:ok, input} = read_file(~c"input01.txt")
-  #   [list1, list2] = input |> parse_input
-  #   calculate_distance_diff(list1, list2)
-  # end
+  def task1() do
+    {:ok, input} = read_file("input_day2.txt")
 
-  # @doc ~S"""
-  # Parses the input converting it into two new lists of integer sorted
+    input
+    |> parse_input
+    |> count_safe
+  end
 
-  # ## Examples
+  @doc ~S"""
+  Parses the input converting it into two new lists of integer sorted
 
-  #     iex> Day01.parse_input("4 3 2\n1 2 4")
-  #     [[4, 3, 2], [1, 2, 4]]
+  ## Examples
 
-  # """
+      iex> Day02.parse_input("4 3 2\n1 2 4")
+      [[4, 3, 2], [1, 2, 4]]
+
+  """
   def parse_input(input) do
     input
     |> String.split("\n")
     |> Enum.map(fn x -> String.split(x, ~r{\s}, trim: true) end)
+    |> Enum.map(fn line -> line |> Enum.map(&String.to_integer/1) end)
   end
 
-  # @doc ~S"""
-  # Calculate the distance diff from two lists. The calculation is Sum(|xi - yi|),
-  # where xi is the element i from the list x and yi is the element i from the list y
+  @doc ~S"""
+  Check if a list is safe, by comparing the each element with the next one, 
+  if the absolute difference betweeen them is beteween 1 and 3, the list is safe
 
-  # ## Examples
+  ## Examples
 
-  #     iex> Day01.calculate_distance_diff([1,4], [2,3])
-  #     2
+      iex> Day02.check_safety([1,4])
+      true
 
-  # """
-  # def calculate_distance_diff(list1, list2) do
-  #   Enum.zip_reduce([list1, list2], 0, fn [el1, el2], result ->
-  #     result + abs(el1 - el2)
-  #   end)
-  # end
+  """
+  def check_safety([head | [htail | _tail]] = list) when head > htail,
+    do: check_safety_decreasing(list)
 
-  # @doc ~S"""
-  # It gets the similarity score list
+  def check_safety([head | [htail | _tail]] = list) when head < htail,
+    do: check_safety_increasing(list)
 
-  # ## Examples
+  def check_safety(_list), do: false
 
-  #     iex> Day01.get_similarity_score([1,2], [2,3])
-  #     [0,2]
+  def check_safety_decreasing([_head | []]), do: true
 
-  # """
-  # def get_similarity_score(list1, list2) do
-  #   Enum.map(list1, fn x -> count(list2, x) * x end)
-  # end
+  def check_safety_decreasing([head | [htail | _ttail] = tail]) do
+    diff = head - htail
+    if diff >= 1 && diff <= 3, do: check_safety_decreasing(tail), else: false
+  end
 
-  # def count([], _), do: 0
-  # def count([x | xs], x), do: 1 + count(xs, x)
-  # def count([_ | xs], x), do: count(xs, x)
+  def check_safety_increasing([_head | []]), do: true
 
-  # def task2() do
-  #   {:ok, input} = read_file("input02.txt")
-  #   [list1, list2] = input |> parse_input
-  #   get_similarity_score(list1, list2) |> Enum.sum
-  # end
+  def check_safety_increasing([head | [htail | _ttail] = tail]) do
+    diff = htail - head
+    if diff >= 1 && diff <= 3, do: check_safety_increasing(tail), else: false
+  end
+
+  @doc ~S"""
+  It counts how many safe line exists on a list of lines
+
+  ## Examples
+
+      iex> Day02.count_safe([[1,2], [2,1,3], [5, 1]])
+      1
+
+  """
+  def count_safe(list) do
+    list |> Enum.count(&check_safety/1)
+  end
+
+  def task2() do
+    {:ok, input} = read_file("input_day2.txt")
+    not_safe =
+      input
+      |> parse_input
+      |> Enum.filter(fn line -> !check_safety(line) end)
+    safe_count = length(parse_input(input)) - length(not_safe)
+
+    tolerate =
+      not_safe
+      |> count_tolerate
+
+      safe_count + tolerate
+  end
+
+
+  @doc ~S"""
+  test
+
+  ## Examples
+
+      iex> Day02.count_tolerate([[94, 92, 89, 86, 83, 80], [1,5,10]])
+      1
+
+  """
+  def count_tolerate(lists) do
+    lists
+    |> Enum.count(fn line ->
+        sublists(line) |> Enum.any?(&check_safety/1)
+    end)
+  end
+
+  defp sublists(list) do
+    Enum.map(0..(length(list) - 1), fn index ->
+      List.delete_at(list, index)
+    end)
+  end
 end

@@ -69,8 +69,8 @@ defmodule Day01 do
   def count([_ | xs], x), do: count(xs, x)
 
   def task2() do
-    {:ok, input} = read_file("input02.txt")
+    {:ok, input} = read_file("input01.txt")
     [list1, list2] = input |> parse_input
-    get_similarity_score(list1, list2) |> Enum.sum
+    get_similarity_score(list1, list2) |> Enum.sum()
   end
 end
