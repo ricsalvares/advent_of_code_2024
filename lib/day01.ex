@@ -8,7 +8,7 @@ defmodule Day01 do
   end
 
   def task1() do
-    {:ok, input} = read_file(~c"input01.txt")
+    {:ok, input} = read_file("input_day01.txt")
     [list1, list2] = input |> parse_input
     calculate_distance_diff(list1, list2)
   end
@@ -69,7 +69,7 @@ defmodule Day01 do
   def count([_ | xs], x), do: count(xs, x)
 
   def task2() do
-    {:ok, input} = read_file("input01.txt")
+    {:ok, input} = read_file("input_day01.txt")
     [list1, list2] = input |> parse_input
     get_similarity_score(list1, list2) |> Enum.sum()
   end

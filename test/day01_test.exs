@@ -3,7 +3,7 @@ defmodule Day01Test do
   doctest Day01
 
   test "Tries to reads file and it works" do
-    assert {:ok, _} = Day01.read_file("input01.txt")
+    assert {:ok, _} = Day01.read_file("input_day01.txt")
   end
 
   test "Compare distance list" do

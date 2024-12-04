@@ -8,7 +8,7 @@ defmodule Day02 do
   end
 
   def task1() do
-    {:ok, input} = read_file("input_day2.txt")
+    {:ok, input} = read_file("input_day02.txt")
 
     input
     |> parse_input
@@ -16,7 +16,7 @@ defmodule Day02 do
   end
 
   @doc ~S"""
-  Parses the input converting it into two new lists of integer sorted
+  Parses the input converting it into new list of lists, each sublist is a list of integer.
 
   ## Examples
 
@@ -70,14 +70,13 @@ defmodule Day02 do
 
       iex> Day02.count_safe([[1,2], [2,1,3], [5, 1]])
       1
-
   """
   def count_safe(list) do
     list |> Enum.count(&check_safety/1)
   end
 
   def task2() do
-    {:ok, input} = read_file("input_day2.txt")
+    {:ok, input} = read_file("input_day02.txt")
     not_safe =
       input
       |> parse_input
@@ -93,13 +92,10 @@ defmodule Day02 do
 
 
   @doc ~S"""
-  test
-
   ## Examples
 
       iex> Day02.count_tolerate([[94, 92, 89, 86, 83, 80], [1,5,10]])
       1
-
   """
   def count_tolerate(lists) do
     lists

@@ -3,7 +3,7 @@ defmodule Day02Test do
   doctest Day02
 
   test "Tries to reads file and it works" do
-    assert {:ok, _} = Day02.read_file("input_day2.txt")
+    assert {:ok, _} = Day02.read_file("input_day02.txt")
   end
 
   test "parse input" do
