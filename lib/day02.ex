@@ -77,19 +77,20 @@ defmodule Day02 do
 
   def task2() do
     {:ok, input} = read_file("input_day02.txt")
+
     not_safe =
       input
       |> parse_input
       |> Enum.filter(fn line -> !check_safety(line) end)
+
     safe_count = length(parse_input(input)) - length(not_safe)
 
     tolerate =
       not_safe
       |> count_tolerate
 
-      safe_count + tolerate
+    safe_count + tolerate
   end
-
 
   @doc ~S"""
   ## Examples
@@ -100,7 +101,7 @@ defmodule Day02 do
   def count_tolerate(lists) do
     lists
     |> Enum.count(fn line ->
-        sublists(line) |> Enum.any?(&check_safety/1)
+      sublists(line) |> Enum.any?(&check_safety/1)
     end)
   end
 

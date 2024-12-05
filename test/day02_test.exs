@@ -50,7 +50,6 @@ defmodule Day02Test do
     assert Day02.task1() == 332
   end
 
-
   test "task2 example" do
     assert Day02.task2() == 398
   end

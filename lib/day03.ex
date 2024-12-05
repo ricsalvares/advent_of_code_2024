@@ -5,20 +5,20 @@ defmodule Day03 do
     File.read(filename)
   end
 
-
   def task1() do
     {:ok, input} = read_file("input_day03.txt")
+
     input
     |> parse_input
-    |> Enum.map(fn [x,y] -> x * y end)
-    |> Enum.sum
+    |> Enum.map(fn [x, y] -> x * y end)
+    |> Enum.sum()
   end
 
   def task1(input) do
     input
     |> parse_input
-    |> Enum.map(fn [x,y] -> x * y end)
-    |> Enum.sum
+    |> Enum.map(fn [x, y] -> x * y end)
+    |> Enum.sum()
   end
 
   @doc ~S"""
@@ -34,12 +34,15 @@ defmodule Day03 do
   end
 
   def get_dos(""), do: []
+
   def get_dos(string) do
-    [first_part_dos|rest] = String.split(string, "don't()", parts: 2)
-    if (length(rest) > 0) do
-      [_|dos] = String.split(hd(rest), "do()", parts: 2)  
+    [first_part_dos | rest] = String.split(string, "don't()", parts: 2)
+
+    if length(rest) > 0 do
+      [_ | dos] = String.split(hd(rest), "do()", parts: 2)
+
       cond do
-        length(dos) > 0 -> [first_part_dos , get_dos(hd(dos))]
+        length(dos) > 0 -> [first_part_dos, get_dos(hd(dos))]
         true -> [first_part_dos]
       end
     else
@@ -48,11 +51,9 @@ defmodule Day03 do
   end
 
   def task2() do
-    { :ok, input } = read_file("input_day03.txt")
+    {:ok, input} = read_file("input_day03.txt")
     task2(input)
   end
-
-
 
   @doc ~S"""
   Parses the input converting it into new list of lists, each sublist contains one element in 
@@ -67,7 +68,6 @@ defmodule Day03 do
     |> Enum.map(&scan/1)
   end
 
-
   @doc ~S"""
   It converts ["mul(1,2)"] into a list of 2 integers, eg: [1,2]
   ## Examples
@@ -76,6 +76,7 @@ defmodule Day03 do
       [43,14]
   """
   def scan([]), do: []
+
   def scan([input]) do
     Regex.replace(~r/mul\(|\)/, input, "")
     |> String.split(",")
